@@ -274,10 +274,10 @@ fn bench_handshake_buffered(
         });
 
         // check we reached idle
-        debug_assert!(!client.is_handshaking());
-        debug_assert!(!server.is_handshaking());
-        debug_assert_eq!(client.handshake_kind(), Some(resume.as_handshake_kind()));
-        debug_assert_eq!(server.handshake_kind(), Some(resume.as_handshake_kind()));
+        assert!(!client.is_handshaking());
+        assert!(!server.is_handshaking());
+        assert_eq!(client.handshake_kind(), Some(resume.as_handshake_kind()));
+        assert_eq!(server.handshake_kind(), Some(resume.as_handshake_kind()));
     }
 
     timings
@@ -325,13 +325,13 @@ fn bench_handshake_unbuffered(
         }
 
         // check we reached idle
-        debug_assert!(!server.communicate());
-        debug_assert!(!client.communicate());
-        debug_assert_eq!(
+        assert!(!server.communicate());
+        assert!(!client.communicate());
+        assert_eq!(
             client.conn.handshake_kind(),
             Some(resume.as_handshake_kind())
         );
-        debug_assert_eq!(
+        assert_eq!(
             server.conn.handshake_kind(),
             Some(resume.as_handshake_kind())
         );
@@ -611,6 +611,7 @@ fn make_server_config(
         cfg.session_storage = Arc::new(NoServerSessionStorage {});
     }
 
+    cfg.send_tls13_tickets = 2; // matches BoringSSL/OpenSSL default
     cfg.max_fragment_size = max_fragment_size;
     Arc::new(cfg)
 }
